@@ -2,12 +2,17 @@ import * as THREE from 'three';
 import { zonesData, showPanel } from './ui.js';
 
 export class Zones {
-    constructor(scene) {
+    constructor(scene, character) {
         this.scene = scene;
+        this.character = character;
         this.markers = [];
         this.floatingTags = [];
         this.activeZone = null;
         this.phoneBoothLight = null;
+
+        this.isSitting = false;
+        this.sittingZoneIndex = 0;
+        this.sitCooldown = 0;
 
         this.initMarkers();
         this.initProps();
@@ -104,6 +109,28 @@ export class Zones {
     }
 
     update(playerPos, time) {
+        if (this.sitCooldown > 0) {
+            this.sitCooldown -= 0.016; // Approx delta
+            if (this.sitCooldown < 0) this.sitCooldown = 0;
+        }
+
+        if (this.isSitting) {
+            this.updateSittingMode();
+            return;
+        }
+
+        // Check for armchair interaction
+        const chairPos = new THREE.Vector3(0, 0.4, 0);
+        const distToChair = playerPos.distanceTo(chairPos);
+        if (distToChair < 2.5 && this.sitCooldown <= 0) {
+            // Sit down
+            this.isSitting = true;
+            this.character.sit(chairPos, 0);
+            this.sittingZoneIndex = 0;
+            showPanel(zonesData[this.sittingZoneIndex].id);
+            return;
+        }
+
         let nearestZone = null;
         let minDist = 3.5;
 
@@ -128,6 +155,34 @@ export class Zones {
 
         if (this.phoneBoothLight) {
             this.phoneBoothLight.intensity = 1.5 + Math.random() * 1.5;
+        }
+    }
+
+    updateSittingMode() {
+        // Handle input to scroll sections
+        if (this.character.keys['KeyW'] || this.character.keys['ArrowUp'] || this.character.keys['KeyA'] || this.character.keys['ArrowLeft']) {
+            if (!this.inputLock) {
+                this.sittingZoneIndex = (this.sittingZoneIndex - 1 + zonesData.length) % zonesData.length;
+                showPanel(zonesData[this.sittingZoneIndex].id);
+                this.inputLock = true;
+                setTimeout(() => this.inputLock = false, 300);
+            }
+        }
+        if (this.character.keys['KeyS'] || this.character.keys['ArrowDown'] || this.character.keys['KeyD'] || this.character.keys['ArrowRight']) {
+            if (!this.inputLock) {
+                this.sittingZoneIndex = (this.sittingZoneIndex + 1) % zonesData.length;
+                showPanel(zonesData[this.sittingZoneIndex].id);
+                this.inputLock = true;
+                setTimeout(() => this.inputLock = false, 300);
+            }
+        }
+
+        // Space or Escape to stand up
+        if (this.character.keys['Space'] || this.character.keys['Escape']) {
+            this.isSitting = false;
+            this.sitCooldown = 2.0; // 2 seconds cooldown
+            this.character.stand();
+            showPanel(null);
         }
     }
 }

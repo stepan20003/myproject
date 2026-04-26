@@ -39,7 +39,7 @@ async function init() {
     rain = new Rain(scene);
 
     // Zones
-    zones = new Zones(scene);
+    zones = new Zones(scene, character);
     initUI();
 
     // Post Processing
@@ -84,15 +84,23 @@ function startExperience() {
     }, 1000);
 }
 
+const PHYSICS_TIMESTEP = 1/60;
+let accumulator = 0;
+
 function animate() {
     requestAnimationFrame(animate);
 
-    const delta = clock.getDelta();
+    const delta = Math.min(clock.getDelta(), 0.1);
     const time = clock.getElapsedTime();
 
     if (isStarted) {
-        physicsWorld.step();
-        character.update();
+        accumulator += delta;
+        while (accumulator >= PHYSICS_TIMESTEP) {
+            physicsWorld.step();
+            accumulator -= PHYSICS_TIMESTEP;
+        }
+
+        character.update(time);
         rain.update();
         zones.update(character.mesh.position, time);
     }

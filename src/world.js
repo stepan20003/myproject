@@ -44,6 +44,63 @@ export function createWorld(scene) {
     // Streets and props
     createStreets(scene);
     createProps(scene);
+    createLounge(scene);
+}
+
+function createLounge(scene) {
+    // Armchair
+    const chairGroup = new THREE.Group();
+    const chairMat = new THREE.MeshStandardMaterial({ color: 0x330033 });
+
+    const seat = new THREE.Mesh(new THREE.BoxGeometry(1, 0.4, 1), chairMat);
+    seat.position.y = 0.2;
+    chairGroup.add(seat);
+
+    const back = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 0.2), chairMat);
+    back.position.set(0, 0.7, 0.4);
+    chairGroup.add(back);
+
+    const armL = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.6, 1), chairMat);
+    armL.position.set(-0.6, 0.3, 0);
+    chairGroup.add(armL);
+    const armR = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.6, 1), chairMat);
+    armR.position.set(0.6, 0.3, 0);
+    chairGroup.add(armR);
+
+    chairGroup.position.set(0, 0, 0);
+    scene.add(chairGroup);
+
+    // TV Stand and Monitor
+    const tvGroup = new THREE.Group();
+    const tvMat = new THREE.MeshStandardMaterial({ color: 0x111111 });
+
+    const stand = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.1, 0.6), tvMat);
+    stand.position.y = 0.05;
+    tvGroup.add(stand);
+
+    const neck = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.4, 0.2), tvMat);
+    neck.position.y = 0.3;
+    tvGroup.add(neck);
+
+    const screen = new THREE.Mesh(new THREE.BoxGeometry(2.5, 1.4, 0.1), tvMat);
+    screen.position.y = 1.2;
+    tvGroup.add(screen);
+
+    // Glow for screen
+    const screenGlow = new THREE.Mesh(
+        new THREE.PlaneGeometry(2.3, 1.2),
+        new THREE.MeshStandardMaterial({
+            color: 0x00f5ff,
+            emissive: 0x00f5ff,
+            emissiveIntensity: 2
+        })
+    );
+    screenGlow.position.set(0, 1.2, -0.06);
+    screenGlow.rotation.y = Math.PI;
+    tvGroup.add(screenGlow);
+
+    tvGroup.position.set(0, 0, -5);
+    scene.add(tvGroup);
 }
 
 function createBuildings(scene) {
