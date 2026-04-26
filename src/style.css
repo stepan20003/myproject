@@ -1,0 +1,182 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #020008;
+    color: #c8e8ff;
+    font-family: 'Courier New', monospace;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+#app {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Intro Overlay */
+#intro-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #020008;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    transition: opacity 1s ease;
+}
+
+#intro-content {
+    text-align: center;
+    color: #00f5ff;
+    font-size: clamp(16px, 3vw, 28px);
+    white-space: pre-wrap;
+}
+
+#press-key {
+    margin-top: 20px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* HUD */
+#hud {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 100;
+}
+
+#hud-controls {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #ffffff44;
+    font-size: 12px;
+}
+
+#hud-title {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    color: #00f5ff;
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* UI Panels */
+.info-panel {
+    position: fixed;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(520px, 90vw);
+    background: rgba(2, 0, 8, 0.85);
+    border: 1px solid #00f5ff44;
+    border-radius: 12px;
+    padding: 24px 28px;
+    color: #c8e8ff;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 30px #00f5ff22, inset 0 0 20px #00000066;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+    z-index: 50;
+}
+
+.info-panel.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.zone-label {
+    position: absolute;
+    top: 10px;
+    left: 15px;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.project-grid {
+    display: flex;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.project-card {
+    flex: 1;
+    border: 1px solid #ff00c844;
+    padding: 10px;
+    border-radius: 6px;
+    background: rgba(255, 0, 200, 0.05);
+}
+
+.project-card h3 {
+    margin: 0;
+    font-size: 14px;
+    color: #ff00c8;
+}
+
+.project-card p {
+    font-size: 12px;
+    margin: 5px 0;
+}
+
+.project-card a {
+    color: #ff00c8;
+    text-decoration: underline;
+    font-size: 11px;
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.skill-tag {
+    padding: 2px 10px;
+    border: 1px solid #9d00ff88;
+    border-radius: 15px;
+    font-size: 12px;
+    color: #9d00ff;
+    background: rgba(157, 0, 255, 0.1);
+}
+
+a {
+    color: #00f5ff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #00f5ff;
+}

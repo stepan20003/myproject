@@ -1,0 +1,11 @@
+
+> stepan-portfolio@0.0.0 dev
+> vite
+
+
+  VITE v8.0.10  ready in 298 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+4:26:45 PM [vite] (client) page reload src/character.js
+4:28:53 PM [vite] (client) page reload src/main.js
